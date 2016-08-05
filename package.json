@@ -18,7 +18,8 @@
   "scripts": {
     "pretest": "rm -rf build && mkdir build && rollup -c",
     "test": "tape 'test/**/*-test.js'",
-    "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js"
+    "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
+    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags"
   },
   "dependencies": {},
   "devDependencies": {

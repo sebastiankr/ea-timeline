@@ -1,18 +1,35 @@
 {
-    "main": "ea-timeline.js",
-    "format": "es6",
-    "registry": "jspm",
-    "jspm": {
-        "dependencies": {
-            "d3": "npm:d3@^4.2.1"
-        },
-        "devDependencies": {
-            "babel": "npm:babel-core@^5.8.24",
-            "babel-runtime": "npm:babel-runtime@^5.8.24",
-            "core-js": "npm:core-js@^1.1.4"
-        }
-    },
-    "devDependencies": {
-        "jspm": "^0.16.42"
-    }
+  "name": "ea-timeline",
+  "version": "0.0.1",
+  "description": "Reactive timeline/gantt chart using D3",
+  "keywords": [
+    "timeline",
+    "d3",
+    "gantt"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "build/ea-timeline.js",
+  "jsnext:main": "index",
+  "homepage": "https://github.com/sebastiankr/ea-timeline",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sebastiankr/ea-timeline.git"
+  },
+  "scripts": {
+    "pretest": "rm -rf build && mkdir build && rollup -c",
+    "test": "tape 'test/**/*-test.js'",
+    "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
+    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags && cp build/ea-timeline.js ../d3.github.com/d3-sankey.v0.3.js && cp build/d3-sankey.min.js ../d3.github.com/d3-sankey.v0.3.min.js && cd ../d3.github.com && git add d3-sankey.v0.3.js d3-sankey.v0.3.min.js && git commit -m \"ea-timeline ${VERSION}\" && git push && cd - && zip -j build/ea-timeline.zip -- LICENSE README.md build/ea-timeline.js build/ea-timeline.min.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^3.2.2",
+    "eslint-config-standard": "^5.3.5",
+    "eslint-plugin-promise": "^2.0.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "rollup": "^0.34.3",
+    "rollup-plugin-node-resolve": "^2.0.0",
+    "tape": "^4.6.0",
+    "uglifyjs": "^2.4.10"
+  }
 }

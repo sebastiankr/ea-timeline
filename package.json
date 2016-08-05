@@ -21,7 +21,10 @@
     "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags"
   },
-  "dependencies": {},
+  "dependencies": {
+    "d3": "^4.2.1",
+    "moment": "^2.14.1"
+  },
   "devDependencies": {
     "eslint": "^3.2.2",
     "eslint-config-standard": "^5.3.5",

@@ -22,8 +22,7 @@
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags"
   },
   "dependencies": {
-    "d3": "^4.2.1",
-    "moment": "^2.14.1"
+    "d3": "^4.2.1"
   },
   "devDependencies": {
     "eslint": "^3.2.2",

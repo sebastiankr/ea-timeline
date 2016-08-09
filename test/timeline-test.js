@@ -1,11 +1,31 @@
 const tape = require('tape')
 const ea = require('../')
-require('jsdom-global')()
+const html = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>test</title>
+  </head>
+  <body>
+    <div id="ea-timeline"></div>
+  </body>
+</html>`
+require('jsdom-global')(html)
 
-const t = ea.timeline()
-
-tape('Testing output', (test) => {
+tape('Should throw if DOM element not found', (test) => {
   test.plan(1)
-  test.equal(t, 'timeline-2')
+  test.throws(() => {
+    ea.timeline({elementSelector: '#does-not-exist'})
+  }, Error, 'DOM element not found')
   test.end()
 })
+
+tape('Should not throw if DOM element is found', (test) => {
+  test.plan(1)
+  test.doesNotThrow(() => {
+    ea.timeline()
+    ea.timeline({elementSelector: '#ea-timeline'})
+  }, Error)
+  test.end()
+})
+

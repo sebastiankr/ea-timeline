@@ -6,18 +6,21 @@ import * as d3 from 'd3'
 
 //   return 'timeline' + min([0, -2, 9])
 // }
+export default function timeline ({ elementSelector = '#ea-timeline', marginLeft = 100, marginRight = 10 } = {}) {
+  const element = d3.select(elementSelector)
 
-export default function timeline (spec) {
-  const element = d3.select('#ea-timeline' || spec.elementSelector)
+  if (element.empty()) {
+    throw new Error('DOM element not found')
+  }
 
   let focusExtent = [d3.timeHour.offset(new Date(), -1 * 24), d3.timeHour.offset(new Date(), 0)]
-    let width = parseInt(element.style('width'), 10) - margin.left - margin.right
-    if (!width) {
-      width = 100
-    }
+  let width = parseInt(element.style('width'), 10) - marginLeft - marginRight
+  if (!width) {
+    width = 100
+  }
   var x = d3.scaleLinear()
     .domain([10, 130])
-    .range([0, 960]);
+    .range([0, 960])
   // let x = d3.timeScale()
   //   .domain(focusExtent)
   //   .range([0, width])

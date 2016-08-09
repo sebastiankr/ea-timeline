@@ -19,20 +19,19 @@
     "testfilter": "test/**/*-test.js"
   },
   "scripts": {
-    "pretest": "rm -rf build && mkdir build && rollup -c",
     "test": "tape test/**/*-test.js",
-    "test:watch": "gaze \"npm test\" test/**/*-test.js",
-    "prebuild": "rimraf build && mkdir build && rollup -c",
-    "build": "rollup -c",
-    "build:watch": "rollup -c -w",
+    "test:watch": "gaze \"npm test\" test/**/*-test.js build/**/*.js",
+    "build": "rollup -c -m",
+    "build:watch": "rollup -c -m -w",
     "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags",
-    "start": "concurrent \"npm run test:watch\" \"npm run build:watch\" \"browser-sync start -s -w\""
+    "start": "concurrent \"npm run build:watch\"  \"npm run test:watch\"  \"browser-sync start -s -w\""
   },
   "dependencies": {
     "d3": "^4.2.1"
   },
   "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.2.0",
     "browser-sync": "^2.14.0",
     "concurrently": "^2.2.0",
     "eslint": "^3.2.2",
@@ -44,6 +43,7 @@
     "jsdom-global": "2.0.0",
     "rimraf": "^2.5.4",
     "rollup": "^0.34.3",
+    "rollup-plugin-babel": "^2.6.1",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-watch": "^2.5.0",
     "tape": "^4.6.0",

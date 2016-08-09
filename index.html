@@ -24,7 +24,7 @@
     <button id="addfunction" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">add task</button>
     <button id="removefunction" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">remove task</button>
 
-    <div id="chart" class="timeline"></div>
+    <div id="ea-timeline" class="timeline"></div>
 
   </div>
 </body>
@@ -81,11 +81,7 @@ window.onload = function runD3code() {
         var nestBykey = d3.nest().key(function (d) { return d.key });
         var d = nestBykey.entries(data);
        
-        var t = ea.timeline({
-          element: d3.select('#chart'),
-          data: d,
-          config: config
-        });
+        var t = ea.timeline();
          
         t.update(d);
         d3.select("#addclient").on("click", function () {

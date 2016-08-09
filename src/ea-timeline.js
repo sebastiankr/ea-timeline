@@ -8,7 +8,7 @@ import * as d3 from 'd3'
 // }
 
 export default function timeline (spec) {
-  const element = spec.element
+  const element = d3.select('#ea-timeline' || spec.elementSelector)
 
   let focusExtent = [d3.timeHour.offset(new Date(), -1 * 24), d3.timeHour.offset(new Date(), 0)]
     let width = parseInt(element.style('width'), 10) - margin.left - margin.right

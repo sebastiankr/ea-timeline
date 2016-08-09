@@ -1,5 +1,6 @@
 const tape = require('tape')
 const ea = require('../')
+require('jsdom-global')()
 
 const t = ea.timeline()
 

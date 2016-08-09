@@ -15,22 +15,37 @@
     "type": "git",
     "url": "https://github.com/sebastiankr/ea-timeline.git"
   },
+  "config": {
+    "testfilter": "test/**/*-test.js"
+  },
   "scripts": {
     "pretest": "rm -rf build && mkdir build && rollup -c",
-    "test": "tape 'test/**/*-test.js'",
+    "test": "tape test/**/*-test.js",
+    "test:watch": "gaze \"npm test\" test/**/*-test.js",
+    "prebuild": "rimraf build && mkdir build && rollup -c",
+    "build": "rollup -c",
+    "build:watch": "rollup -c -w",
     "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
-    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags"
+    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags",
+    "start": "concurrent \"npm run test:watch\" \"npm run build:watch\" \"browser-sync start -s -w\""
   },
   "dependencies": {
     "d3": "^4.2.1"
   },
   "devDependencies": {
+    "browser-sync": "^2.14.0",
+    "concurrently": "^2.2.0",
     "eslint": "^3.2.2",
     "eslint-config-standard": "^5.3.5",
     "eslint-plugin-promise": "^2.0.0",
     "eslint-plugin-standard": "^2.0.0",
+    "gaze-cli": "^0.2.0",
+    "jsdom": "9.4.1",
+    "jsdom-global": "2.0.0",
+    "rimraf": "^2.5.4",
     "rollup": "^0.34.3",
     "rollup-plugin-node-resolve": "^2.0.0",
+    "rollup-watch": "^2.5.0",
     "tape": "^4.6.0",
     "uglifyjs": "^2.4.10"
   }

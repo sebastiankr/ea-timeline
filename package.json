@@ -8,7 +8,7 @@
     "gantt"
   ],
   "license": "BSD-3-Clause",
-  "main": "build/ea-timeline.js",
+  "main": "build/ea-timeline.min.js",
   "jsnext:main": "index",
   "homepage": "https://github.com/sebastiankr/ea-timeline",
   "repository": {
@@ -21,8 +21,9 @@
   "scripts": {
     "test": "tape test/**/*-test.js",
     "test:watch": "gaze \"npm test\" test/**/*-test.js build/**/*.js",
-    "build": "rollup -c -m",
-    "build:watch": "rollup -c -m -w",
+    "build": "rollup -c rollup.config.dev.js -m",
+    "build:watch": "npm run build -- -w",
+    "bundle": "rollup -c rollup.config.prod.js && uglifyjs build/ea-timeline.prod.js -c -m -o build/ea-timeline.min.js",
     "prepublish": "npm run test && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags",
     "start": "concurrent \"npm run build:watch\"  \"npm run test:watch\"  \"browser-sync start -s -w\""

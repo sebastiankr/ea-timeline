@@ -6,7 +6,7 @@ export default {
   format: 'umd',
   moduleName: 'ea',
   plugins: [
-    npm({jsnext: true}),
-    babel({exclude: 'node_modules/**'})],
+    npm({jsnext: true})
+  ],
   dest: './build/ea-timeline.js'
 }

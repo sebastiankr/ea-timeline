@@ -1,6 +1,6 @@
 {
   "name": "ea-timeline",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Reactive timeline/gantt chart using D3",
   "keywords": [
     "timeline",

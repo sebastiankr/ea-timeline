@@ -67,10 +67,18 @@ window.onload = function runD3code() {
       //   };
         // var nestBykey = d3.nest().key(function (d) { return d.key });
         // var d = nestBykey.entries(data);
-       
+       var data = [
+           { key: 'Very Long student name', name: 'Task 1', startTime: new Date(), endTime: new Date(), status: 3, docLink: 'http://google.com' }
+       ]
+
+       data.push({ key: 'test'+ 8*Math.random(), values: [] })
         var t = ea.timeline();
-         
-        // t.update(d);
+         t.update(data)
+
+        document.getElementById("addclient").onclick = function(event) { 
+          data.push({ key: 'test'+ 8*Math.random(), values: [] })
+          t.update(data)
+        }
         // d3.select("#addclient").on("click", function () {
         //   d.push({ key: 'test'+ 8*Math.random(), values: [] });
         //   t.update(d);

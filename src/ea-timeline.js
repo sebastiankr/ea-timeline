@@ -18,9 +18,7 @@ export default function timeline ({ elementSelector = '#ea-timeline', marginLeft
   if (!width) {
     width = 100
   }
-  // var x = d3.scaleLinear()
-  //   .domain([10, 130])
-  //   .range([0, 960])
+
   let x = d3.scaleTime()
     .domain(focusExtent)
     .range([0, width])

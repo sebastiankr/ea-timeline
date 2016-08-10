@@ -6,137 +6,126 @@
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-duration-format/1.3.0/moment-duration-format.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.12/crossfilter.min.js"></script>
-  <script src="detect-element-resize.js"></script>
-  <link href='//fonts.googleapis.com/css?family=Roboto:400,700' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Roboto+Condensed:400,300' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.0.6/material.min.css">
-  <link rel="stylesheet" type="text/css" href="main.css">
+
 </head>
 
 <body>
   <div class="content">
-    <button id="addclient" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">add process</button>
-    <button id="removeclient" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">remove process</button>
-    <button id="addfunction" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">add task</button>
-    <button id="removefunction" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">remove task</button>
+    <button id="addclient">add process</button>
+    <button id="removeclient">remove process</button>
+    <button id="addfunction">add task</button>
+    <button id="removefunction">remove task</button>
 
     <div id="ea-timeline" class="timeline"></div>
 
   </div>
 </body>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.6.7/d3-tip.js"></script>
-<script src="context-menu-d3.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.0.6/material.min.js"></script>
 <script src="./build/ea-timeline.js"></script>
 <script>
 window.onload = function runD3code() {
-       var data = [
-           { key: 'Process 1', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -117), endTime: d3.time.hour.offset(new Date(), -112), status: 3, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -111), status: 4, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -67), endTime: d3.time.hour.offset(new Date(), -65), status: 5, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -41), endTime: d3.time.hour.offset(new Date(), -38), status: 6, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -37), endTime: d3.time.hour.offset(new Date(), -33), status: 3, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -13), endTime: d3.time.hour.offset(new Date(), -10), status: 1, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -9), endTime: d3.time.hour.offset(new Date(), -5), status: 2, docLink: 'http://google.com' },
-           { key: 'Process 1', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -4), endTime: d3.time.hour.offset(new Date(), -1), status: 4, docLink: 'http://google.com' },
+      //  var data = [
+      //      { key: 'Process 1', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -117), endTime: d3.time.hour.offset(new Date(), -112), status: 3, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -111), status: 4, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -67), endTime: d3.time.hour.offset(new Date(), -65), status: 5, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -41), endTime: d3.time.hour.offset(new Date(), -38), status: 6, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -37), endTime: d3.time.hour.offset(new Date(), -33), status: 3, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -13), endTime: d3.time.hour.offset(new Date(), -10), status: 1, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -9), endTime: d3.time.hour.offset(new Date(), -5), status: 2, docLink: 'http://google.com' },
+      //      { key: 'Process 1', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -4), endTime: d3.time.hour.offset(new Date(), -1), status: 4, docLink: 'http://google.com' },
            
-           { key: 'Process 2', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -120), endTime: d3.time.hour.offset(new Date(), -119), status: 1, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -118), endTime: d3.time.hour.offset(new Date(), -111), status: 2, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -108), endTime: d3.time.hour.offset(new Date(), -99), status: 3, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -98), endTime: d3.time.hour.offset(new Date(), -88), status: 4, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -87), endTime: d3.time.hour.offset(new Date(), -75), status: 5, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -51), endTime: d3.time.hour.offset(new Date(), -48), status: 6, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -47), endTime: d3.time.hour.offset(new Date(), -33), status: 7, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -25), endTime: d3.time.hour.offset(new Date(), -21), status: 8, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -19), endTime: d3.time.hour.offset(new Date(), -16), status: 11, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -15), endTime: d3.time.hour.offset(new Date(), -14), status: 5, docLink: 'http://google.com' },
-           { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -4), endTime: d3.time.hour.offset(new Date(), -3), status: 9, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -120), endTime: d3.time.hour.offset(new Date(), -119), status: 1, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -118), endTime: d3.time.hour.offset(new Date(), -111), status: 2, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -108), endTime: d3.time.hour.offset(new Date(), -99), status: 3, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -98), endTime: d3.time.hour.offset(new Date(), -88), status: 4, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -87), endTime: d3.time.hour.offset(new Date(), -75), status: 5, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -51), endTime: d3.time.hour.offset(new Date(), -48), status: 6, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -47), endTime: d3.time.hour.offset(new Date(), -33), status: 7, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -25), endTime: d3.time.hour.offset(new Date(), -21), status: 8, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -19), endTime: d3.time.hour.offset(new Date(), -16), status: 11, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -15), endTime: d3.time.hour.offset(new Date(), -14), status: 5, docLink: 'http://google.com' },
+      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -4), endTime: d3.time.hour.offset(new Date(), -3), status: 9, docLink: 'http://google.com' },
                                             
-           { key: 'Process 3', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -7), endTime: d3.time.hour.offset(new Date(), -5), status: 1, docLink: 'http://google.com' },
-           { key: 'Process 3', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -10), endTime: d3.time.hour.offset(new Date(), -8), status: 3, docLink: 'http://google.com' },
+      //      { key: 'Process 3', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -7), endTime: d3.time.hour.offset(new Date(), -5), status: 1, docLink: 'http://google.com' },
+      //      { key: 'Process 3', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -10), endTime: d3.time.hour.offset(new Date(), -8), status: 3, docLink: 'http://google.com' },
            
-           { key: 'Process 4', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -125), endTime: d3.time.hour.offset(new Date(), -121), status: 4, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -122), endTime: d3.time.hour.offset(new Date(), -120), status: 5, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -118), endTime: d3.time.hour.offset(new Date(), -117), status: 6, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -106), status: 7, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -110), endTime: d3.time.hour.offset(new Date(), -104), status: 8, docLink: 'http://google.com' }, 
-           { key: 'Process 4', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -97), endTime: d3.time.hour.offset(new Date(), -95), status: 11, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -92), endTime: d3.time.hour.offset(new Date(), -89), status: 12, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -81), endTime: d3.time.hour.offset(new Date(), -80), status: 13, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 9', startTime: d3.time.hour.offset(new Date(), -78), endTime: d3.time.hour.offset(new Date(), -72), status: 13, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 10', startTime: d3.time.hour.offset(new Date(), -65), endTime: d3.time.hour.offset(new Date(), -56), status: 10, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 11', startTime: d3.time.hour.offset(new Date(), -51), endTime: d3.time.hour.offset(new Date(), -48), status: 9, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 12', startTime: d3.time.hour.offset(new Date(), -5), endTime: d3.time.hour.offset(new Date(), -3), status: 2, docLink: 'http://google.com' },
-           { key: 'Process 4', name: 'Task 13', startTime: d3.time.hour.offset(new Date(), -2), endTime: d3.time.hour.offset(new Date(), -1), status: 1, docLink: 'http://google.com' },      
-       ];
-       var config = { 
-                "contextVisibility" : "visible",
-                "contextHeight" : 50
-        };
-        var nestBykey = d3.nest().key(function (d) { return d.key });
-        var d = nestBykey.entries(data);
+      //      { key: 'Process 4', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -125), endTime: d3.time.hour.offset(new Date(), -121), status: 4, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -122), endTime: d3.time.hour.offset(new Date(), -120), status: 5, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -118), endTime: d3.time.hour.offset(new Date(), -117), status: 6, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -106), status: 7, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -110), endTime: d3.time.hour.offset(new Date(), -104), status: 8, docLink: 'http://google.com' }, 
+      //      { key: 'Process 4', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -97), endTime: d3.time.hour.offset(new Date(), -95), status: 11, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -92), endTime: d3.time.hour.offset(new Date(), -89), status: 12, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -81), endTime: d3.time.hour.offset(new Date(), -80), status: 13, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 9', startTime: d3.time.hour.offset(new Date(), -78), endTime: d3.time.hour.offset(new Date(), -72), status: 13, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 10', startTime: d3.time.hour.offset(new Date(), -65), endTime: d3.time.hour.offset(new Date(), -56), status: 10, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 11', startTime: d3.time.hour.offset(new Date(), -51), endTime: d3.time.hour.offset(new Date(), -48), status: 9, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 12', startTime: d3.time.hour.offset(new Date(), -5), endTime: d3.time.hour.offset(new Date(), -3), status: 2, docLink: 'http://google.com' },
+      //      { key: 'Process 4', name: 'Task 13', startTime: d3.time.hour.offset(new Date(), -2), endTime: d3.time.hour.offset(new Date(), -1), status: 1, docLink: 'http://google.com' },      
+      //  ];
+      //  var config = { 
+      //           "contextVisibility" : "visible",
+      //           "contextHeight" : 50
+      //   };
+        // var nestBykey = d3.nest().key(function (d) { return d.key });
+        // var d = nestBykey.entries(data);
        
         var t = ea.timeline();
          
-        t.update(d);
-        d3.select("#addclient").on("click", function () {
-          d.push({ key: 'test'+ 8*Math.random(), values: [] });
-          t.update(d);
-        });
+        // t.update(d);
+        // d3.select("#addclient").on("click", function () {
+        //   d.push({ key: 'test'+ 8*Math.random(), values: [] });
+        //   t.update(d);
+        // });
         
-        d3.select("#removeclient").on("click", function () {
-          d.pop();
-          t.update(d);
-        });
-        d3.select("#addfunction").on("click", function () {
-          var item = d[Math.floor(Math.random()*d.length)];
-          var statCode = Math.floor(Math.random()*9+1);
-          item.values.push(
-           { name: 'added function', startTime: d3.time.hour.offset(new Date(), 0) , status: statCode}
-          );
-          t.update(d);          
-        });  
-        d3.select("#removefunction").on("click", function () {
-          var item = d[Math.floor(Math.random()*d.length)];
-          item.values.pop(Math.floor(Math.random()*item.values.length));
-          t.update(d);          
-        });
+        // d3.select("#removeclient").on("click", function () {
+        //   d.pop();
+        //   t.update(d);
+        // });
+        // d3.select("#addfunction").on("click", function () {
+        //   var item = d[Math.floor(Math.random()*d.length)];
+        //   var statCode = Math.floor(Math.random()*9+1);
+        //   item.values.push(
+        //    { name: 'added function', startTime: d3.time.hour.offset(new Date(), 0) , status: statCode}
+        //   );
+        //   t.update(d);          
+        // });  
+        // d3.select("#removefunction").on("click", function () {
+        //   var item = d[Math.floor(Math.random()*d.length)];
+        //   item.values.pop(Math.floor(Math.random()*item.values.length));
+        //   t.update(d);          
+        // });
         
-        d3.select("#h4").on("click", function () {
-          console.log('4h');
-          t.zoom(4*60*60*1000);        
-        });
+        // d3.select("#h4").on("click", function () {
+        //   console.log('4h');
+        //   t.zoom(4*60*60*1000);        
+        // });
         
-        d3.select("#h8").on("click", function () {
-          console.log('8h');
-           t.zoom(8*60*60*1000);       
-        });
+        // d3.select("#h8").on("click", function () {
+        //   console.log('8h');
+        //    t.zoom(8*60*60*1000);       
+        // });
         
-        d3.select("#d1").on("click", function () {
-          console.log('d1');
-           t.zoom(24*60*60*1000);       
-        });
+        // d3.select("#d1").on("click", function () {
+        //   console.log('d1');
+        //    t.zoom(24*60*60*1000);       
+        // });
         
-        d3.select("#d5").on("click", function () {
-          console.log('d5');
-          t.zoom(24*5*60*60*1000);
-        });
+        // d3.select("#d5").on("click", function () {
+        //   console.log('d5');
+        //   t.zoom(24*5*60*60*1000);
+        // });
         
-        var w = window.innerWidth;
-        window.onresize = function resize() {
-          if(w!=this.innerWidth){
-             //console.log("resize event detected!" + this.innerWidth);
+        // var w = window.innerWidth;
+        // window.onresize = function resize() {
+        //   if(w!=this.innerWidth){
+        //      //console.log("resize event detected!" + this.innerWidth);
           
-              t.resize();
-              w=this.innerWidth;
-          }
+        //       t.resize();
+        //       w=this.innerWidth;
+        //   }
          
-        }
+        // }
    };</script>
 
 </html>

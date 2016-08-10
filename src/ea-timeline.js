@@ -6,7 +6,7 @@ import * as d3 from 'd3'
 
 //   return 'timeline' + min([0, -2, 9])
 // }
-export default function timeline ({ elementSelector = '#ea-timeline', marginLeft = 100, marginRight = 10 } = {}) {
+export default function timeline ({ elementSelector = '#ea-timeline', marginLeft = 100, marginRight = 10, marginTop = 30, marginBottom = 30 } = {}) {
   const element = d3.select(elementSelector)
 
   if (element.empty()) {
@@ -18,20 +18,21 @@ export default function timeline ({ elementSelector = '#ea-timeline', marginLeft
   if (!width) {
     width = 100
   }
-  var x = d3.scaleLinear()
-    .domain([10, 130])
-    .range([0, 960])
-  // let x = d3.timeScale()
-  //   .domain(focusExtent)
-  //   .range([0, width])
+  // var x = d3.scaleLinear()
+  //   .domain([10, 130])
+  //   .range([0, 960])
+  let x = d3.scaleTime()
+    .domain(focusExtent)
+    .range([0, width])
   let axis = d3.axisTop(x)
-  d3.select('body').append('svg')
-    .attr('class', 'axis')
-    .attr('width', 1440)
-    .attr('height', 30)
+
+  let svg = element.append('svg')
+    .style('width', (width + marginLeft + marginRight) + 'px')
     .append('g')
-    .attr('transform', 'translate(0,30)')
+    .attr('transform', 'translate(' + [marginLeft, marginTop] + ')')
+    .attr('class', 'x axis top')
     .call(axis)
+
     // let element = spec.element
     // let data = spec.data
     // let spacing = 2

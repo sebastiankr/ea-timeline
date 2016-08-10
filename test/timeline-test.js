@@ -1,5 +1,5 @@
 const tape = require('tape')
-const ea = require('../')
+const ea = require('../build/ea-timeline.js')
 const html = `<!DOCTYPE html>
 <html lang="en">
   <head>

@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export default function timeline ({ elementSelector = '#ea-timeline', marginLeft = 100, marginRight = 10, marginTop = 30, marginBottom = 30, timelineHeight = 40, spacing = 2 } = {}) {
+export default function timeline ({ elementSelector = '#ea-timeline', marginLeft = 100, marginRight = 10, marginTop = 30, marginBottom = 30, timelineHeight = 40, spacing = 2, paddingOuter = 0, paddingInner = 0 } = {}) {
   const element = d3.select(elementSelector)
 
   if (element.empty()) {
@@ -40,16 +40,18 @@ export default function timeline ({ elementSelector = '#ea-timeline', marginLeft
 
   // UPDATE
   const update = (data) => {
-    let y = d3.scaleBand()
-
-    y.domain(data.map((d) => d.key))
+    const y = d3.scaleBand()
+      .paddingOuter(paddingOuter)
+      .paddingInner(paddingInner)
+      .domain(data.map((d) => d.key))
       .range([0, data.length * timelineHeight])
+      .round(true)
 
     const yAxis = d3.axisLeft()
     yAxis.scale(y)
     svg.select('.y.axis')
       .call(yAxis)
-    .selectAll('.tick text')
+      .selectAll('.tick text')
       // .call(wrap, marginLeft)
 
     // TODO xAxisi missing
@@ -69,68 +71,66 @@ export default function timeline ({ elementSelector = '#ea-timeline', marginLeft
     //   return 'translate(0,' + contextHeight + ')'
     // })
 
-    // let bars = chart.selectAll('.bar')
-    //   .data(data, (d) => {
-    //     return d.key;})
+    let bars = timelines.selectAll('.bar')
+      .data(data, (d) => d.key)
 
-    // bars.enter()
-    //   .append('g')
-    //   .attr('class', 'bar')
-    //   .append('rect')
-    //   .attr('class', 'background')
-    //   .attr('height', y.rangeBand())
-    //   .attr('width', width)
+    bars.enter()
+      .append('g')
+      .attr('transform', (d, i) => {
+        return 'translate(' + [0, y(d.key)] + ')'
+      })
+      .attr('class', 'bar')
+      .append('rect')
+      .attr('class', 'timeline-background')
+      .attr('height', y.bandwidth())
+      .attr('width', width - marginLeft - marginRight)
 
-    // bars.attr('transform', (d, i) => {
-    //   let index = d3.map(data, (d) => {
-    //     return d.key;}).keys().indexOf(d.key)
-    //   return 'translate(0,' + (index * _mainBarHeight + spacing) + ')'
-    // })
+    bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 
-    // let funct = bars.selectAll('rect.function')
-    //   .data((d) => {
-    //     return (d.values) ? d.values : []
-    //   })
+    let funct = bars.selectAll('rect.function')
+      .data((d) => {
+        return (d.values) ? d.values : []
+      })
 
-    // funct.enter().append('rect')
-    //   .on('mouseover', tip.show)
-    //   .on('mouseout', tip.hide)
-    //   .on('contextmenu', d3.contextMenu(function (data) {
-    //     let menu = []
-    //     if (data.docLink) {
-    //       menu.push({
-    //         title: '<core-icon icon="help" self-center></core-icon>Documentation',
-    //         action: function (elm, d, i) {
-    //           console.log('Item #1 clicked!')
-    //           window.location.href = d.docLink
-    //         }
-    //       })
-    //     }
-    //     return menu
-    //   }))
+    funct.enter().append('rect')
+        // .on('mouseover', tip.show)
+        // .on('mouseout', tip.hide)
+        // .on('contextmenu', d3.contextMenu(function (data) {
+        //   let menu = []
+        //   if (data.docLink) {
+        //     menu.push({
+        //       title: '<core-icon icon="help" self-center></core-icon>Documentation',
+        //       action: function (elm, d, i) {
+        //         console.log('Item #1 clicked!')
+        //         window.location.href = d.docLink
+        //       }
+        //     })
+        //   }
+        //   return menu
+        // }))
 
-    // funct.attr('transform', (d) => {
-    //   return 'translate(' + x(d.startTime) + ',0)'
-    // })
-    //   .attr('class', (d) => {
-    //     let cls = 'function'
-    //     if (!d.endTime) {
-    //       cls += ' running'
-    //     }
-    //     if (d.status) {
-    //       cls += ' status' + d.status
-    //     }
+    funct.attr('transform', (d) => {
+      return 'translate(' + x(d.startTime) + ',0)'
+    })
+      .attr('class', (d) => {
+        let cls = 'function'
+        if (!d.endTime) {
+          cls += ' running'
+        }
+        if (d.status) {
+          cls += ' status' + d.status
+        }
 
-    //     return cls
-    //   })
-    //   .attr('height', y.rangeBand())
-    //   .attr('width', function (d) {
-    //     return calculateWidth(d, x)
-    //   })
+        return cls
+      })
+      .attr('height', y.bandwidth())
+      .attr('width', function (d) {
+        return calculateWidth(d, x)
+      })
 
-    // funct.exit().remove()
+    funct.exit().remove()
 
-    // bars.exit().remove()
+    bars.exit().remove()
 
     // let contextbars = context.selectAll('.bar')
     //   .data(data, (d) => {
@@ -173,9 +173,55 @@ export default function timeline ({ elementSelector = '#ea-timeline', marginLeft
   // contextFunct.exit().remove()
   }
 
-  return Object.freeze({
-  // resize,
-  update})
+  let resize = function resize () {
+    // update width
+    width = parseInt(element.style('width'), 10)
+    // width = width - margin.left - margin.right
+
+    // resize the chart
+    x.range([0, width - marginLeft - marginRight])
+    // xBrush.range([0, width])
+    // this.brush.clear()
+
+    // d3.select(chart.node().parentNode)
+    //   // .style('height', (this.y.rangeExtent()[1] + this.margin.top + this.margin.bottom + 300) + 'px')
+    //   .style('width', (width + margin.left + margin.right) + 'px')
+
+    // chart.selectAll('rect.background')
+    //   .attr('width', width)
+
+    // chart.selectAll('rect.function')
+    //   .attr('transform', (d) => {
+    //     return 'translate(' + x(d.startTime) + ',0)';})
+    //   .attr('width', (d) => {
+    //     return calculateWidth(d, x)
+    //   })
+
+    // context.selectAll('rect.function')
+    //   .attr('transform', (d) => {
+    //     return 'translate(' + xBrush(d.startTime) + ',0)';})
+    //   .attr('width', (d) => {
+    //     return calculateWidth(d, xBrush)
+    //   })
+    // update axes
+    timelines.select('.x.axis.top').call(xAxisTop)
+    timelines.select('.x.axis.bottom').call(xAxisBottom)
+  // context.select('.x.axis.context.bottom').call(xAxisBrush.orient('bottom'))
+  // context.select('.x.brush').call(brush.extent(focusExtent))
+  }
+  var calculateWidth = function (d, xa) {
+    var width = 0
+    if (!d.endTime) {
+      width = xa(new Date()) - xa(d.startTime)
+    } else if (d.startTime) {
+      width = xa(d.endTime) - xa(d.startTime)
+    } if (width > 0 && width < 1) {
+      width = 1
+    }
+    return width
+  }
+
+  return Object.freeze({resize, update})
 
   // let element = spec.element
   // let data = spec.data

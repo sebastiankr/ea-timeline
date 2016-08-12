@@ -15,13 +15,23 @@
     <button id="removeclient">remove process</button>
     <button id="addfunction">add task</button>
     <button id="removefunction">remove task</button>
-    <div id="ea-timeline" class="timeline"></div>
+    <div id="ea-timeline" class="timeline">
+      <style scoped>      
+        .bar rect.timeline-background {
+          stroke: #fff;
+          fill: #eee;
+        }
+      </style>
+    </div>
   </div>
 </body>
-
+<script src="./node_modules/moment/min/moment.min.js"></script>
 <script src="./build/ea-timeline.js"></script>
 <script>
+
 window.onload = function runD3code() {
+
+
       //  var data = [
       //      { key: 'Process 1', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -117), endTime: d3.time.hour.offset(new Date(), -112), status: 3, docLink: 'http://google.com' },
       //      { key: 'Process 1', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -111), status: 4, docLink: 'http://google.com' },
@@ -68,26 +78,24 @@ window.onload = function runD3code() {
         // var nestBykey = d3.nest().key(function (d) { return d.key });
         // var d = nestBykey.entries(data);
        var data = [
-           { key: 'Very Long student name', name: 'Task 1', startTime: new Date(), endTime: new Date(), status: 3, docLink: 'http://google.com' }
+           { key: 'Very Long student name', name: 'Task 1', startTime: moment().subtract(2, 'hours').toDate(), endTime: new Date(), status: 3, docLink: 'http://google.com' }
        ]
 
-       data.push({ key: 'test'+ 8*Math.random(), values: [] })
+       // data.push({ key: 'test'+ 8*Math.random(), values: [] })
+
         var t = ea.timeline();
          t.update(data)
 
-        document.getElementById("addclient").onclick = function(event) { 
+        document.getElementById("addclient").addEventListener("click", (event) => { 
           data.push({ key: 'test'+ 8*Math.random(), values: [] })
           t.update(data)
-        }
-        // d3.select("#addclient").on("click", function () {
-        //   d.push({ key: 'test'+ 8*Math.random(), values: [] });
-        //   t.update(d);
-        // });
+        })
         
-        // d3.select("#removeclient").on("click", function () {
-        //   d.pop();
-        //   t.update(d);
-        // });
+        document.getElementById("removeclient").addEventListener("click", (event) => { 
+          data.pop()
+          t.update(data)
+        })
+
         // d3.select("#addfunction").on("click", function () {
         //   var item = d[Math.floor(Math.random()*d.length)];
         //   var statCode = Math.floor(Math.random()*9+1);
@@ -132,6 +140,12 @@ window.onload = function runD3code() {
         //   }
          
         // }
+
+        window.addEventListener('resize', function(){
+          // console.log('rewrite' +window.innerWidth)
+          // console.log("resize event detected!" + this.innerWidth);
+          t.resize()
+        }, true)
    };</script>
 
 </html>

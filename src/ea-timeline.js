@@ -92,7 +92,7 @@ export default function timeline ({ elementSelector = '#ea-timeline', marginLeft
         return (d.values) ? d.values : []
       })
 
-    funct.enter().append('rect')
+    funct.enter().append('rect.function')
         // .on('mouseover', tip.show)
         // .on('mouseout', tip.hide)
         // .on('contextmenu', d3.contextMenu(function (data) {

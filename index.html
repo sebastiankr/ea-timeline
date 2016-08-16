@@ -26,9 +26,19 @@
   </div>
 </body>
 <script src="./node_modules/moment/min/moment.min.js"></script>
+<script src="./node_modules/lodash/lodash.js"></script>
+<script src="./node_modules/d3/build/d3.js"></script>
 <script src="./build/ea-timeline.js"></script>
 <script>
-
+var nest = function (seq, keys) {
+    if (!keys.length)
+        return seq;
+    var first = keys[0];
+    var rest = keys.slice(1);
+    return _.mapValues(_.groupBy(seq, first), function (value) { 
+        return nest(value, rest)
+    });
+}
 window.onload = function runD3code() {
 
 
@@ -80,20 +90,23 @@ window.onload = function runD3code() {
        var data = [
            { key: 'Very Long student name', name: 'Task 1', startTime: moment().subtract(2, 'hours').toDate(), endTime: new Date(), status: 3, docLink: 'http://google.com' }
        ]
-
+       
+       // var nestBykey = nest(data, [function (d) { return d.key }])
+        var nestBykey = d3.nest().key(function (d) { return d.key });
+        var d = nestBykey.entries(data);
        // data.push({ key: 'test'+ 8*Math.random(), values: [] })
 
         var t = ea.timeline();
-         t.update(data)
+        t.update(d)
 
         document.getElementById("addclient").addEventListener("click", (event) => { 
-          data.push({ key: 'test'+ 8*Math.random(), values: [] })
-          t.update(data)
+          d.push({ key: 'test'+ 8*Math.random(), values: [] })
+          t.update(d)
         })
         
         document.getElementById("removeclient").addEventListener("click", (event) => { 
-          data.pop()
-          t.update(data)
+          d.pop()
+          t.update(d)
         })
 
         // d3.select("#addfunction").on("click", function () {

@@ -27,7 +27,7 @@
     "prepublish": "npm run bundle",
     "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags",
     "serve": "browser-sync start -s -f '*.html' 'build/*.js' '!node_modules' ",
-    "start": "npm-run-all -p serve build:watch"
+    "start": "npm-run-all -p build:watch serve"
   },
   "dependencies": {
     "d3": "^4.2.1"
@@ -42,6 +42,7 @@
     "gaze-cli": "^0.2.0",
     "jsdom": "9.4.1",
     "jsdom-global": "2.0.0",
+    "lodash": "^4.15.0",
     "moment": "^2.14.1",
     "npm-run-all": "^2.3.0",
     "rimraf": "^2.5.4",

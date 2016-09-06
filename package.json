@@ -25,7 +25,7 @@
     "build:watch": "npm run build -- -w",
     "bundle": "rollup -c && uglifyjs build/ea-timeline.js -c -m -o build/ea-timeline.min.js",
     "prepublish": "npm run bundle",
-    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags",
+    "postpublish": "git push && git push --tags",
     "serve": "browser-sync start -s -f *.html build/*.js",
     "start": "npm-run-all -p build:watch test:watch serve"
   },

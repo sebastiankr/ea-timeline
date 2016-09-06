@@ -96,8 +96,26 @@ window.onload = function runD3code() {
         var d = nestBykey.entries(data);
        // data.push({ key: 'test'+ 8*Math.random(), values: [] })
 
-        var t = ea.timeline();
-        t.update(d)
+var testData = [
+[
+  {x: 1, y: 40},
+  {x: 2, y: 43},
+  {x: 3, y: 12},
+  {x: 6, y: 23}
+], [
+  {x: 1, y: 12},
+  {x: 4, y: 18},
+  {x: 5, y: 73},
+  {x: 6, y: 27}
+], [
+  {x: 1, y: 60},
+  {x: 2, y: 49},
+  {x: 3, y: 16},
+  {x: 6, y: 20}
+ ] 
+];
+        var t = ea.timeline({data: d});
+        //t.update(d)
 
         document.getElementById("addclient").addEventListener("click", (event) => { 
           d.push({ key: 'test'+ 8*Math.random(), values: [] })
@@ -157,7 +175,7 @@ window.onload = function runD3code() {
         window.addEventListener('resize', function(){
           // console.log('rewrite' +window.innerWidth)
           // console.log("resize event detected!" + this.innerWidth);
-          t.resize()
+          // t.resize()
         }, true)
    };</script>
 

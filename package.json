@@ -27,7 +27,7 @@
     "prepublish": "npm run bundle",
     "postpublish": "git push && git push --tags",
     "serve": "browser-sync start -s -f *.html build/*.js",
-    "start": "npm-run-all -p build:watch test:watch serve"
+    "start": "npm-run-all -p build:watch serve"
   },
   "dependencies": {
     "d3": "^4.2.2"

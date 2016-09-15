@@ -1,6 +1,16 @@
 import * as d3 from 'd3'
 
-export default function timeline ({ elementSelector = '#ea-timeline', data = [], marginLeft = 120, marginRight = 10, marginTop = 20, marginBottom = 18, timelineHeight = 18, spacing = 2, paddingOuter = 0, paddingInner = 0 } = {}) {
+export default function timeline ({
+  elementSelector = '#ea-timeline',
+  data = [],
+  margin = { top: 18, right: 10, bottom: 18, left: 120 },
+  innerMargin = { top: 18, right: 10, bottom: 18, left: 120 },
+  showAxis = { top: true, bottom: true, left: true },
+  timelineHeight = 30,
+  spacing = 2,
+  paddingOuter = 0,
+  paddingInner = 0
+} = {}) {
   const element = d3.select(elementSelector)
 
   if (element.empty()) {
@@ -12,7 +22,7 @@ export default function timeline ({ elementSelector = '#ea-timeline', data = [],
 
   let x = d3.scaleTime()
     .domain(focusExtent)
-    .range([0, width - marginLeft - marginRight])
+    .range([0, width - margin.left - margin.right])
   const xAxisTop = d3.axisTop(x)
   const xAxisBottom = d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M'))
 
@@ -21,18 +31,23 @@ export default function timeline ({ elementSelector = '#ea-timeline', data = [],
     .attr('height', '100%')
 
   let timelines = svg.append('g')
-    .attr('transform', 'translate(' + [marginLeft, marginTop] + ')')
+    .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
 
-  timelines.append('g').attr('class', 'x axis top')
-    .call(xAxisTop)
+  if (showAxis.top) {
+    timelines.append('g').attr('class', 'x axis top')
+      .call(xAxisTop)
+  }
 
-  timelines.append('g')
-    .attr('class', 'x axis bottom')
-    .call(xAxisBottom)
-
-  timelines.append('g')
-    .attr('class', 'y axis')
+  if (showAxis.bottom) {
+    timelines.append('g')
+      .attr('class', 'x axis bottom')
+      .call(xAxisBottom)
+  }
+  if (showAxis.left) {
+    timelines.append('g')
+      .attr('class', 'y axis')
     // .attr('transform', 'translate(' + [marginLeft, marginTop] + ')')
+  }
 
   // UPDATE
   const update = (data) => {
@@ -50,7 +65,7 @@ export default function timeline ({ elementSelector = '#ea-timeline', data = [],
       .selectAll('.tick text')
 
     const height = y.range()[1]
-    svg.attr('height', (height + marginTop + marginBottom) + 'px')
+    svg.attr('height', (height + margin.top + margin.bottom) + 'px')
 
     timelines.select('.x.axis.bottom').attr('transform', () => {
       return 'translate(' + [0, height] + ')'
@@ -69,7 +84,7 @@ export default function timeline ({ elementSelector = '#ea-timeline', data = [],
       .append('rect')
       .attr('class', 'timeline-background')
       .attr('height', y.bandwidth())
-      .attr('width', width - marginLeft - marginRight)
+      .attr('width', width - margin.left - margin.right)
 
     // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 

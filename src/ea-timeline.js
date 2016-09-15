@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 
-export default function timeline ({ elementSelector = '#ea-timeline', data = [], marginLeft = 100, marginRight = 10, marginTop = 30, marginBottom = 30, timelineHeight = 40, spacing = 2, paddingOuter = 0, paddingInner = 0 } = {}) {
+export default function timeline ({ elementSelector = '#ea-timeline', data = [], marginLeft = 120, marginRight = 10, marginTop = 20, marginBottom = 18, timelineHeight = 18, spacing = 2, paddingOuter = 0, paddingInner = 0 } = {}) {
   const element = d3.select(elementSelector)
 
   if (element.empty()) {
@@ -56,14 +56,16 @@ export default function timeline ({ elementSelector = '#ea-timeline', data = [],
       return 'translate(' + [0, height] + ')'
     })
 
-    var bars = timelines.selectAll('g .bar')
+    const bars = timelines.selectAll('g.bar')
       .data(data)
-      .enter()
+
+    const g = bars.enter()
       .append('g')
       .attr('transform', (d, i) => {
         return 'translate(' + [0, y(d.key)] + ')'
       })
       .attr('class', 'bar')
+    g
       .append('rect')
       .attr('class', 'timeline-background')
       .attr('height', y.bandwidth())
@@ -71,10 +73,12 @@ export default function timeline ({ elementSelector = '#ea-timeline', data = [],
 
     // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 
-    var funct = bars.selectAll('rect')
+    var funct = g.selectAll('rect.function')
       .data(function (d, i, j) { console.log('Data: ' + JSON.stringify(d), '\nIndex: ' + JSON.stringify(i), '\nNode: ' + JSON.stringify(j)); return d.values})
+
       .enter()
       .append('rect')
+      .attr('class', 'function')
 
     funct.attr('transform', (d) => {
       return 'translate(' + x(d.startTime) + ',0)'

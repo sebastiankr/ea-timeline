@@ -3,9 +3,9 @@ import * as d3 from 'd3'
 export default function timeline ({
   elementSelector = '#ea-timeline',
   data = [],
-  margin = { top: 18, right: 10, bottom: 18, left: 120 },
-  innerMargin = { top: 18, right: 10, bottom: 18, left: 120 },
-  showAxis = { top: true, bottom: true, left: true },
+  margin = { top: 18, right: 120, bottom: 18, left: 120 },
+  innerMargin = { top: 0, right: 0, bottom: 0, left: 0 },
+  showAxis = { top: true, right: true, bottom: true, left: true },
   timelineHeight = 30,
   spacing = 2,
   paddingOuter = 0,
@@ -22,7 +22,7 @@ export default function timeline ({
 
   let x = d3.scaleTime()
     .domain(focusExtent)
-    .range([0, width - margin.left - margin.right])
+    .range([0, width - margin.left - innerMargin.left - margin.right])
   const xAxisTop = d3.axisTop(x)
   const xAxisBottom = d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M'))
 
@@ -34,7 +34,9 @@ export default function timeline ({
     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
 
   if (showAxis.top) {
-    timelines.append('g').attr('class', 'x axis top')
+    timelines.append('g')
+      .attr('class', 'x axis top')
+       .attr('transform', 'translate(' + [innerMargin.left, 0] + ')')
       .call(xAxisTop)
   }
 
@@ -45,10 +47,15 @@ export default function timeline ({
   }
   if (showAxis.left) {
     timelines.append('g')
-      .attr('class', 'y axis')
-    // .attr('transform', 'translate(' + [marginLeft, marginTop] + ')')
+      .attr('class', 'y axis left')
+      .attr('transform', 'translate(' + [0, innerMargin.top] + ')')
   }
 
+  if (showAxis.right) {
+    timelines.append('g')
+      .attr('class', 'y axis right')
+      .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
+  }
   // UPDATE
   const update = (data) => {
     const y = d3.scaleBand()
@@ -58,18 +65,23 @@ export default function timeline ({
       .range([0, data.length * timelineHeight])
       .round(true)
 
-    const yAxis = d3.axisLeft()
-    yAxis.scale(y)
-    timelines.select('.y.axis')
-      .call(yAxis)
+    const yAxisLeft = d3.axisLeft()
+    yAxisLeft.scale(y)
+    timelines.select('.y.axis.left')
+      .call(yAxisLeft)
+      .selectAll('.tick text')
+
+    const yAxisRight = d3.axisRight()
+    yAxisRight.scale(y)
+    timelines.select('.y.axis.right')
+      .call(yAxisRight)
       .selectAll('.tick text')
 
     const height = y.range()[1]
-    svg.attr('height', (height + margin.top + margin.bottom) + 'px')
+    svg.attr('height', (height + margin.top + innerMargin.top + margin.bottom + innerMargin.bottom) + 'px')
 
-    timelines.select('.x.axis.bottom').attr('transform', () => {
-      return 'translate(' + [0, height] + ')'
-    })
+    timelines.select('.x.axis.bottom')
+      .attr('transform', 'translate(' + [innerMargin.left, height + innerMargin.top + innerMargin.bottom] + ')')
 
     const bars = timelines.selectAll('g.bar')
       .data(data)
@@ -77,14 +89,14 @@ export default function timeline ({
     const g = bars.enter()
       .append('g')
       .attr('transform', (d, i) => {
-        return 'translate(' + [0, y(d.key)] + ')'
+        return 'translate(' + [innerMargin.left, y(d.key) + innerMargin.top] + ')'
       })
       .attr('class', 'bar')
     g
       .append('rect')
       .attr('class', 'timeline-background')
       .attr('height', y.bandwidth())
-      .attr('width', width - margin.left - margin.right)
+      .attr('width', width - margin.left - innerMargin.left - margin.right)
 
     // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 

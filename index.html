@@ -18,7 +18,7 @@
     <div id="ea-timeline" class="timeline">
       <style scoped>      
         .bar rect.timeline-background {
-          /*stroke: #fff;*/
+          stroke: #fff;
           fill: #eee;
         }
       </style>
@@ -42,80 +42,49 @@ var nest = function (seq, keys) {
 window.onload = function runD3code() {
 
 
-      //  var data = [
-      //      { key: 'Process 1', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -117), endTime: d3.time.hour.offset(new Date(), -112), status: 3, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -111), status: 4, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -67), endTime: d3.time.hour.offset(new Date(), -65), status: 5, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -41), endTime: d3.time.hour.offset(new Date(), -38), status: 6, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -37), endTime: d3.time.hour.offset(new Date(), -33), status: 3, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -13), endTime: d3.time.hour.offset(new Date(), -10), status: 1, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -9), endTime: d3.time.hour.offset(new Date(), -5), status: 2, docLink: 'http://google.com' },
-      //      { key: 'Process 1', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -4), endTime: d3.time.hour.offset(new Date(), -1), status: 4, docLink: 'http://google.com' },
-           
-      //      { key: 'Process 2', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -120), endTime: d3.time.hour.offset(new Date(), -119), status: 1, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -118), endTime: d3.time.hour.offset(new Date(), -111), status: 2, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -108), endTime: d3.time.hour.offset(new Date(), -99), status: 3, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -98), endTime: d3.time.hour.offset(new Date(), -88), status: 4, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -87), endTime: d3.time.hour.offset(new Date(), -75), status: 5, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -51), endTime: d3.time.hour.offset(new Date(), -48), status: 6, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -47), endTime: d3.time.hour.offset(new Date(), -33), status: 7, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -25), endTime: d3.time.hour.offset(new Date(), -21), status: 8, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -19), endTime: d3.time.hour.offset(new Date(), -16), status: 11, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -15), endTime: d3.time.hour.offset(new Date(), -14), status: 5, docLink: 'http://google.com' },
-      //      { key: 'Process 2', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -4), endTime: d3.time.hour.offset(new Date(), -3), status: 9, docLink: 'http://google.com' },
-                                            
-      //      { key: 'Process 3', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -7), endTime: d3.time.hour.offset(new Date(), -5), status: 1, docLink: 'http://google.com' },
-      //      { key: 'Process 3', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -10), endTime: d3.time.hour.offset(new Date(), -8), status: 3, docLink: 'http://google.com' },
-           
-      //      { key: 'Process 4', name: 'Task 1', startTime: d3.time.hour.offset(new Date(), -125), endTime: d3.time.hour.offset(new Date(), -121), status: 4, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 2', startTime: d3.time.hour.offset(new Date(), -122), endTime: d3.time.hour.offset(new Date(), -120), status: 5, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 3', startTime: d3.time.hour.offset(new Date(), -118), endTime: d3.time.hour.offset(new Date(), -117), status: 6, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 4', startTime: d3.time.hour.offset(new Date(), -114), endTime: d3.time.hour.offset(new Date(), -106), status: 7, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 5', startTime: d3.time.hour.offset(new Date(), -110), endTime: d3.time.hour.offset(new Date(), -104), status: 8, docLink: 'http://google.com' }, 
-      //      { key: 'Process 4', name: 'Task 6', startTime: d3.time.hour.offset(new Date(), -97), endTime: d3.time.hour.offset(new Date(), -95), status: 11, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 7', startTime: d3.time.hour.offset(new Date(), -92), endTime: d3.time.hour.offset(new Date(), -89), status: 12, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 8', startTime: d3.time.hour.offset(new Date(), -81), endTime: d3.time.hour.offset(new Date(), -80), status: 13, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 9', startTime: d3.time.hour.offset(new Date(), -78), endTime: d3.time.hour.offset(new Date(), -72), status: 13, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 10', startTime: d3.time.hour.offset(new Date(), -65), endTime: d3.time.hour.offset(new Date(), -56), status: 10, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 11', startTime: d3.time.hour.offset(new Date(), -51), endTime: d3.time.hour.offset(new Date(), -48), status: 9, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 12', startTime: d3.time.hour.offset(new Date(), -5), endTime: d3.time.hour.offset(new Date(), -3), status: 2, docLink: 'http://google.com' },
-      //      { key: 'Process 4', name: 'Task 13', startTime: d3.time.hour.offset(new Date(), -2), endTime: d3.time.hour.offset(new Date(), -1), status: 1, docLink: 'http://google.com' },      
-      //  ];
-      //  var config = { 
-      //           "contextVisibility" : "visible",
-      //           "contextHeight" : 50
-      //   };
-        // var nestBykey = d3.nest().key(function (d) { return d.key });
-        // var d = nestBykey.entries(data);
        var data = [
-           { key: 'Very Long student name', name: 'Task 1', startTime: moment().subtract(2, 'hours').toDate(), endTime: new Date(), status: 3, docLink: 'http://google.com' }
-       ]
-       
-       // var nestBykey = nest(data, [function (d) { return d.key }])
+           { key: 'Process 1', name: 'Task 2', startTime: moment().subtract(114, 'hours'), endTime: moment().subtract(111, 'hours'), status: 4, docLink: 'http://google.com' },
+           { key: 'Process 1', name: 'Task 3', startTime: moment().subtract(67, 'hours'), endTime: moment().subtract(65, 'hours'), status: 5, docLink: 'http://google.com' },
+           { key: 'Process 1', name: 'Task 4', startTime: moment().subtract(41, 'hours'), endTime: moment().subtract(38, 'hours'), status: 6, docLink: 'http://google.com' },
+           { key: 'Process 1', name: 'Task 5', startTime: moment().subtract(37, 'hours'), endTime: moment().subtract(33, 'hours'), status: 3, docLink: 'http://google.com' },
+           { key: 'Process 1', name: 'Task 6', startTime: moment().subtract(13, 'hours'), endTime: moment().subtract(10, 'hours'), status: 1, docLink: 'http://google.com' },
+           { key: 'Process 1', name: 'Task 7', startTime: moment().subtract(9, 'hours'), endTime: moment().subtract(5, 'hours'), status: 2, docLink: 'http://google.com' },
+           { key: 'Process 1', name: 'Task 8', startTime: moment().subtract(4, 'hours'), endTime: moment().subtract(1, 'hours'), status: 4, docLink: 'http://google.com' },
+           
+           { key: 'Process 2', name: 'Task 1', startTime: moment().subtract(120, 'hours'), endTime: moment().subtract(119, 'hours'), status: 1, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 2', startTime: moment().subtract(118, 'hours'), endTime: moment().subtract(111, 'hours'), status: 2, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 3', startTime: moment().subtract(108, 'hours'), endTime: moment().subtract(99, 'hours'), status: 3, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 4', startTime: moment().subtract(98, 'hours'), endTime: moment().subtract(88, 'hours'), status: 4, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 5', startTime: moment().subtract(87, 'hours'), endTime: moment().subtract(75, 'hours'), status: 5, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 6', startTime: moment().subtract(51, 'hours'), endTime: moment().subtract(48, 'hours'), status: 6, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 7', startTime: moment().subtract(47, 'hours'), endTime: moment().subtract(33, 'hours'), status: 7, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 8', startTime: moment().subtract(25, 'hours'), endTime: moment().subtract(21, 'hours'), status: 8, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 8', startTime: moment().subtract(19, 'hours'), endTime: moment().subtract(16, 'hours'), status: 11, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 8', startTime: moment().subtract(15, 'hours'), endTime: moment().subtract(14, 'hours'), status: 5, docLink: 'http://google.com' },
+           { key: 'Process 2', name: 'Task 8', startTime: moment().subtract(4, 'hours'), endTime: moment().subtract(3, 'hours'), status: 9, docLink: 'http://google.com' },
+                                            
+           { key: 'Process 3', name: 'Task 1', startTime: moment().subtract(7, 'hours'), endTime: moment().subtract(5, 'hours'), status: 1, docLink: 'http://google.com' },
+           { key: 'Process 3', name: 'Task 2', startTime: moment().subtract(10, 'hours'), endTime: moment().subtract(8, 'hours'), status: 3, docLink: 'http://google.com' },
+           
+           { key: 'Process 4', name: 'Task 1', startTime: moment().subtract(125, 'hours'), endTime: moment().subtract(121, 'hours'), status: 4, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 2', startTime: moment().subtract(122, 'hours'), endTime: moment().subtract(120, 'hours'), status: 5, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 3', startTime: moment().subtract(118, 'hours'), endTime: moment().subtract(117, 'hours'), status: 6, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 4', startTime: moment().subtract(114, 'hours'), endTime: moment().subtract(106, 'hours'), status: 7, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 5', startTime: moment().subtract(110, 'hours'), endTime: moment().subtract(104, 'hours'), status: 8, docLink: 'http://google.com' }, 
+           { key: 'Process 4', name: 'Task 6', startTime: moment().subtract(97, 'hours'), endTime: moment().subtract(95, 'hours'), status: 11, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 7', startTime: moment().subtract(92, 'hours'), endTime: moment().subtract(89, 'hours'), status: 12, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 8', startTime: moment().subtract(81, 'hours'), endTime: moment().subtract(80, 'hours'), status: 13, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 9', startTime: moment().subtract(78, 'hours'), endTime: moment().subtract(72, 'hours'), status: 13, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 10', startTime: moment().subtract(65, 'hours'), endTime: moment().subtract(56, 'hours'), status: 10, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 11', startTime: moment().subtract(51, 'hours'), endTime: moment().subtract(48, 'hours'), status: 9, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 12', startTime: moment().subtract(5, 'hours'), endTime: moment().subtract(3, 'hours'), status: 2, docLink: 'http://google.com' },
+           { key: 'Process 4', name: 'Task 13', startTime: moment().subtract(2, 'hours'), endTime: moment().subtract(1, 'hours'), status: 1, docLink: 'http://google.com' },      
+       ];
+
         var nestBykey = d3.nest().key(function (d) { return d.key });
         var d = nestBykey.entries(data);
-       // data.push({ key: 'test'+ 8*Math.random(), values: [] })
 
-var testData = [
-[
-  {x: 1, y: 40},
-  {x: 2, y: 43},
-  {x: 3, y: 12},
-  {x: 6, y: 23}
-], [
-  {x: 1, y: 12},
-  {x: 4, y: 18},
-  {x: 5, y: 73},
-  {x: 6, y: 27}
-], [
-  {x: 1, y: 60},
-  {x: 2, y: 49},
-  {x: 3, y: 16},
-  {x: 6, y: 20}
- ] 
-];
-        var t = ea.timeline({data: d});
-        //t.update(d)
+        var defaultTimeline = ea.timeline({data: d});
 
         document.getElementById("addclient").addEventListener("click", (event) => { 
           d.push({ key: 'test'+ 8*Math.random(), values: [] })
@@ -175,7 +144,9 @@ var testData = [
         window.addEventListener('resize', function(){
           // console.log('rewrite' +window.innerWidth)
           // console.log("resize event detected!" + this.innerWidth);
-          // t.resize()
+          var timelines = [defaultTimeline]
+          timelines.map((t) => t.resize() )
+          //defaultTimeline.resize()
         }, true)
    };</script>
 

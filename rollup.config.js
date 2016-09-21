@@ -5,6 +5,7 @@ export default {
   entry: 'index.js',
   format: 'umd',
   moduleName: 'ea',
+  globals: {},
   plugins: [
     npm({jsnext: true}),
     babel({exclude: 'node_modules/**'})

@@ -17,10 +17,10 @@ export default function timeline ({
     throw new Error('DOM element not found')
   }
 
-  let focusExtent = [d3.timeHour.offset(new Date(), -1 * 24), d3.timeHour.offset(new Date(), 0)]
-  let width = parseInt(element.style('width'), 10) || 600
+  const focusExtent = [d3.timeHour.offset(new Date(), -1 * 24), d3.timeHour.offset(new Date(), 0)]
+  const width = parseInt(element.style('width'), 10) || 600
 
-  let x = d3.scaleTime()
+  const x = d3.scaleTime()
     .domain(focusExtent)
     .range([0, width - margin.left - innerMargin.left - margin.right])
     .clamp(true)
@@ -28,15 +28,15 @@ export default function timeline ({
   const xAxisTop = d3.axisTop(x)
   const xAxisBottom = d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M'))
 
-  let svg = element.append('svg')
+  const svg = element.append('svg')
     .attr('width', '100%')
     .attr('height', '100%')
 
-  let marginGroup = svg.append('g')
+  const marginGroup = svg.append('g')
     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
 
-  let timelines = marginGroup.append('g')
-  let scales = marginGroup.append('g')
+  const timelines = marginGroup.append('g')
+  const scales = marginGroup.append('g')
 
   if (showAxis.top) {
     scales.append('g')
@@ -93,9 +93,7 @@ export default function timeline ({
 
     const g = bars.enter()
       .append('g')
-      .attr('transform', (d, i) => {
-        return 'translate(' + [innerMargin.left, y(d.key) + innerMargin.top] + ')'
-      })
+      .attr('transform', d => 'translate(' + [innerMargin.left, y(d.key) + innerMargin.top] + ')')
       .attr('class', 'bar')
     g
       .append('rect')
@@ -106,7 +104,7 @@ export default function timeline ({
     // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 
     var funct = g.selectAll('rect.function')
-      .data(function (d, i, j) { console.log('Data: ' + JSON.stringify(d), '\nIndex: ' + JSON.stringify(i), '\nNode: ' + JSON.stringify(j)); return d.values})
+      .data(d => d.values)
 
       .enter()
       .append('rect')
@@ -140,12 +138,12 @@ export default function timeline ({
 
   return Object.freeze({update})
 }
-var calculateWidth = function (d, xa) {
-  var width = 0
+var calculateWidth = function (d, x) {
+  let width = 0
   if (!d.endTime) {
-    width = xa(new Date()) - xa(d.startTime)
+    width = x(new Date()) - x(d.startTime)
   } else if (d.startTime) {
-    width = xa(d.endTime) - xa(d.startTime)
+    width = x(d.endTime) - x(d.startTime)
   } if (width > 0 && width < 1) {
     width = 1
   }

@@ -30,18 +30,7 @@
 <script src="./node_modules/d3/build/d3.js"></script>
 <script src="./build/ea-timeline.js"></script>
 <script>
-var nest = function (seq, keys) {
-    if (!keys.length)
-        return seq;
-    var first = keys[0];
-    var rest = keys.slice(1);
-    return _.mapValues(_.groupBy(seq, first), function (value) { 
-        return nest(value, rest)
-    });
-}
 window.onload = function runD3code() {
-
-
        var data = [
            { key: 'Process 1', name: 'Task 2', startTime: moment().subtract(114, 'hours'), endTime: moment().subtract(111, 'hours'), status: 4, docLink: 'http://google.com' },
            { key: 'Process 1', name: 'Task 3', startTime: moment().subtract(67, 'hours'), endTime: moment().subtract(65, 'hours'), status: 5, docLink: 'http://google.com' },
@@ -85,10 +74,12 @@ window.onload = function runD3code() {
         var d = nestBykey.entries(data);
 
         var defaultTimeline = ea.timeline({data: d});
-
+        
+        
+        var timelines = [defaultTimeline]
         document.getElementById("addclient").addEventListener("click", (event) => { 
           d.push({ key: 'test'+ 8*Math.random(), values: [] })
-          t.update(d)
+          timelines.map(t => t.update(d))
         })
         
         document.getElementById("removeclient").addEventListener("click", (event) => { 
@@ -144,7 +135,7 @@ window.onload = function runD3code() {
         window.addEventListener('resize', function(){
           // console.log('rewrite' +window.innerWidth)
           // console.log("resize event detected!" + this.innerWidth);
-          var timelines = [defaultTimeline]
+          
           timelines.map((t) => t.resize() )
           //defaultTimeline.resize()
         }, true)

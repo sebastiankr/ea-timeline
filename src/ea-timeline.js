@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 export default function timeline ({
   elementSelector = '#ea-timeline',
   data = [],
-  margin = { top: 18, right: 120, bottom: 18, left: 120 },
+  margin = { top: 18, right: 125, bottom: 18, left: 125 },
   innerMargin = { top: 0, right: 0, bottom: 0, left: 0 },
   showAxis = { top: true, right: true, bottom: true, left: true },
   timelineHeight = 30,
@@ -23,6 +23,8 @@ export default function timeline ({
   let x = d3.scaleTime()
     .domain(focusExtent)
     .range([0, width - margin.left - innerMargin.left - margin.right])
+    .clamp(true)
+
   const xAxisTop = d3.axisTop(x)
   const xAxisBottom = d3.axisBottom(x).tickFormat(d3.timeFormat('%H:%M'))
 
@@ -30,29 +32,32 @@ export default function timeline ({
     .attr('width', '100%')
     .attr('height', '100%')
 
-  let timelines = svg.append('g')
+  let marginGroup = svg.append('g')
     .attr('transform', 'translate(' + [margin.left, margin.top] + ')')
 
+  let timelines = marginGroup.append('g')
+  let scales = marginGroup.append('g')
+
   if (showAxis.top) {
-    timelines.append('g')
+    scales.append('g')
       .attr('class', 'x axis top')
        .attr('transform', 'translate(' + [innerMargin.left, 0] + ')')
       .call(xAxisTop)
   }
 
   if (showAxis.bottom) {
-    timelines.append('g')
+    scales.append('g')
       .attr('class', 'x axis bottom')
       .call(xAxisBottom)
   }
   if (showAxis.left) {
-    timelines.append('g')
+    scales.append('g')
       .attr('class', 'y axis left')
       .attr('transform', 'translate(' + [0, innerMargin.top] + ')')
   }
 
   if (showAxis.right) {
-    timelines.append('g')
+    scales.append('g')
       .attr('class', 'y axis right')
       .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
   }
@@ -67,20 +72,20 @@ export default function timeline ({
 
     const yAxisLeft = d3.axisLeft()
     yAxisLeft.scale(y)
-    timelines.select('.y.axis.left')
+    scales.select('.y.axis.left')
       .call(yAxisLeft)
       .selectAll('.tick text')
 
     const yAxisRight = d3.axisRight()
     yAxisRight.scale(y)
-    timelines.select('.y.axis.right')
+    scales.select('.y.axis.right')
       .call(yAxisRight)
       .selectAll('.tick text')
 
     const height = y.range()[1]
     svg.attr('height', (height + margin.top + innerMargin.top + margin.bottom + innerMargin.bottom) + 'px')
 
-    timelines.select('.x.axis.bottom')
+    scales.select('.x.axis.bottom')
       .attr('transform', 'translate(' + [innerMargin.left, height + innerMargin.top + innerMargin.bottom] + ')')
 
     const bars = timelines.selectAll('g.bar')

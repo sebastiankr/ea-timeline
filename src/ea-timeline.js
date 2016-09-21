@@ -62,11 +62,11 @@ export default function timeline ({
       .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
   }
   // UPDATE
-  const update = (data) => {
+  const update = data => {
     const y = d3.scaleBand()
       .paddingOuter(paddingOuter)
       .paddingInner(paddingInner)
-      .domain(data.map((d) => d.key))
+      .domain(data.map(d => d.key))
       .range([0, data.length * timelineHeight])
       .round(true)
 
@@ -110,10 +110,8 @@ export default function timeline ({
       .append('rect')
       .attr('class', 'function')
 
-    funct.attr('transform', (d) => {
-      return 'translate(' + x(d.startTime) + ',0)'
-    })
-      .attr('class', (d) => {
+    funct.attr('transform', d => 'translate(' + x(d.startTime) + ',0)')
+      .attr('class', d => {
         let cls = 'function'
         if (!d.endTime) {
           cls += ' running'
@@ -121,13 +119,10 @@ export default function timeline ({
         if (d.status) {
           cls += ' status' + d.status
         }
-
         return cls
       })
       .attr('height', y.bandwidth())
-      .attr('width', function (d) {
-        return calculateWidth(d, x)
-      })
+      .attr('width', d => calculateWidth(d, x))
 
     funct.exit().remove()
 
@@ -138,7 +133,7 @@ export default function timeline ({
 
   return Object.freeze({update})
 }
-var calculateWidth = function (d, x) {
+var calculateWidth = (d, x) => {
   let width = 0
   if (!d.endTime) {
     width = x(new Date()) - x(d.startTime)

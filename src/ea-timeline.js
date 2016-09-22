@@ -12,8 +12,6 @@ export default function timeline ({
   paddingInner = 0
 } = {}) {
   const element = d3.select(elementSelector)
-  let funct
-  let backgroundSelection
   let xAxisTopGroup
   let xAxisBottomGroup
   let yAxisLeftGroup
@@ -99,7 +97,7 @@ export default function timeline ({
       .append('g')
       .attr('transform', d => 'translate(' + [innerMargin.left, y(d.key) + innerMargin.top] + ')')
       .attr('class', 'bar')
-    backgroundSelection = g
+    g
       .append('rect')
       .attr('class', 'timeline-background')
       .attr('height', y.bandwidth())
@@ -107,7 +105,7 @@ export default function timeline ({
 
     // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 
-    funct = g.selectAll('rect.function')
+    const funct = g.selectAll('rect.function')
       .data(d => d.values)
 
       .enter()
@@ -147,9 +145,10 @@ export default function timeline ({
     //   // .style('height', (this.y.rangeExtent()[1] + this.margin.top + this.margin.bottom + 300) + 'px')
     //   .style('width', (width + margin.left + margin.right) + 'px')
 
-    backgroundSelection.attr('width', width - margin.left - innerMargin.left - margin.right - innerMargin.right)
+    timelines.selectAll('rect.timeline-background')
+      .attr('width', width - margin.left - innerMargin.left - margin.right - innerMargin.right)
 
-    funct
+    timelines.selectAll('rect.function')
       .attr('transform', d => 'translate(' + x(d.startTime) + ',0)')
       .attr('width', d => calculateWidth(d, x))
 

@@ -11,8 +11,8 @@
 
 <body>
   <div class="content">
-    <button id="addclient">add process</button>
-    <button id="removeclient">remove process</button>
+    <button id="addprocess">add process</button>
+    <button id="removeprocess">remove process</button>
     <button id="addfunction">add task</button>
     <button id="removefunction">remove task</button>
     <div id="ea-timeline" class="timeline">
@@ -75,16 +75,16 @@ window.onload = function runD3code() {
 
         var defaultTimeline = ea.timeline({data: d});
         
-        
         var timelines = [defaultTimeline]
-        document.getElementById("addclient").addEventListener("click", (event) => { 
-          d.push({ key: 'test'+ 8*Math.random(), values: [] })
-          timelines.map(t => t.update(d))
-        })
         
-        document.getElementById("removeclient").addEventListener("click", (event) => { 
+        d3.select("#addprocess").on("click", function () {
+          d.push({ key: 'test'+ 8*Math.random(), values: [] })
+          timelines.map(function (t) { t.update(d) })
+        })
+
+        d3.select("#removeprocess").on("click", function () {
           d.pop()
-          t.update(d)
+          timelines.map(function (t) { t.update(d) })
         })
 
         // d3.select("#addfunction").on("click", function () {
@@ -136,7 +136,7 @@ window.onload = function runD3code() {
           // console.log('rewrite' +window.innerWidth)
           // console.log("resize event detected!" + this.innerWidth);
           
-          timelines.map((t) => t.resize() )
+          timelines.map(function (t) { t.resize() })
           //defaultTimeline.resize()
         }, true)
    };</script>

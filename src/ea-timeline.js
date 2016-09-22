@@ -12,17 +12,18 @@ export default function timeline ({
   paddingInner = 0
 } = {}) {
   const element = d3.select(elementSelector)
-
+  let funct
+  let backgroundSelection
   if (element.empty()) {
     throw new Error('DOM element not found')
   }
 
   const focusExtent = [d3.timeHour.offset(new Date(), -1 * 24), d3.timeHour.offset(new Date(), 0)]
-  const width = parseInt(element.style('width'), 10) || 600
+  let width = parseInt(element.style('width'), 10) || 600
 
   const x = d3.scaleTime()
     .domain(focusExtent)
-    .range([0, width - margin.left - innerMargin.left - margin.right])
+    .range([0, width - margin.left - innerMargin.left - margin.right - innerMargin.right])
     .clamp(true)
 
   const xAxisTop = d3.axisTop(x)
@@ -37,7 +38,7 @@ export default function timeline ({
 
   const timelines = marginGroup.append('g')
   const scales = marginGroup.append('g')
-
+  
   if (showAxis.top) {
     scales.append('g')
       .attr('class', 'x axis top')
@@ -95,7 +96,7 @@ export default function timeline ({
       .append('g')
       .attr('transform', d => 'translate(' + [innerMargin.left, y(d.key) + innerMargin.top] + ')')
       .attr('class', 'bar')
-    g
+    backgroundSelection = g
       .append('rect')
       .attr('class', 'timeline-background')
       .attr('height', y.bandwidth())
@@ -103,7 +104,7 @@ export default function timeline ({
 
     // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 
-    var funct = g.selectAll('rect.function')
+    funct = g.selectAll('rect.function')
       .data(d => d.values)
 
       .enter()
@@ -129,9 +130,43 @@ export default function timeline ({
     bars.exit().remove()
   }
 
+  const resize = function resize () {
+    // update width
+    width = parseInt(element.style('width'), 10)
+    // width = width - margin.left - margin.right
+
+    // resize the chart
+    x.range([0, width - margin.left - innerMargin.left - margin.right - innerMargin.right])
+    // xBrush.range([0, width])
+    // this.brush.clear()
+
+    // d3.select(chart.node().parentNode)
+    //   // .style('height', (this.y.rangeExtent()[1] + this.margin.top + this.margin.bottom + 300) + 'px')
+    //   .style('width', (width + margin.left + margin.right) + 'px')
+
+    backgroundSelection.attr('width', width - margin.left - innerMargin.left - margin.right - innerMargin.right)
+
+    //svg.selectAll('rect.function')
+    funct
+      .attr('transform', d => 'translate(' + x(d.startTime) + ',0)')
+      .attr('width', d => calculateWidth(d, x))
+
+    // svg.selectAll('rect.function')
+    //   .attr('transform', (d) => {
+    //     return 'translate(' + xBrush(d.startTime) + ',0)';})
+    //   .attr('width', (d) => {
+    //     return calculateWidth(d, xBrush)
+    //   })
+    // update axes
+    scales.select('.x.axis.top').call(xAxisTop)
+    scales.select('.x.axis.bottom').call(xAxisBottom)
+  // context.select('.x.axis.context.bottom').call(xAxisBrush.orient('bottom'))
+  // context.select('.x.brush').call(brush.extent(focusExtent))
+  }
+
   update(data)
 
-  return Object.freeze({update})
+  return Object.freeze({update, resize})
 }
 var calculateWidth = (d, x) => {
   let width = 0

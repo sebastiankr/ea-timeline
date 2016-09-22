@@ -14,6 +14,11 @@ export default function timeline ({
   const element = d3.select(elementSelector)
   let funct
   let backgroundSelection
+  let xAxisTopGroup
+  let xAxisBottomGroup
+  let yAxisLeftGroup
+  let yAxisRightGroup
+
   if (element.empty()) {
     throw new Error('DOM element not found')
   }
@@ -38,27 +43,27 @@ export default function timeline ({
 
   const timelines = marginGroup.append('g')
   const scales = marginGroup.append('g')
-  
+
   if (showAxis.top) {
-    scales.append('g')
+    xAxisTopGroup = scales.append('g')
       .attr('class', 'x axis top')
        .attr('transform', 'translate(' + [innerMargin.left, 0] + ')')
       .call(xAxisTop)
   }
 
   if (showAxis.bottom) {
-    scales.append('g')
+    xAxisBottomGroup = scales.append('g')
       .attr('class', 'x axis bottom')
       .call(xAxisBottom)
   }
   if (showAxis.left) {
-    scales.append('g')
+    yAxisLeftGroup = scales.append('g')
       .attr('class', 'y axis left')
       .attr('transform', 'translate(' + [0, innerMargin.top] + ')')
   }
 
   if (showAxis.right) {
-    scales.append('g')
+    yAxisRightGroup = scales.append('g')
       .attr('class', 'y axis right')
       .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
   }
@@ -71,22 +76,20 @@ export default function timeline ({
       .range([0, data.length * timelineHeight])
       .round(true)
 
-    const yAxisLeft = d3.axisLeft()
-    yAxisLeft.scale(y)
-    scales.select('.y.axis.left')
+    const yAxisLeft = d3.axisLeft().scale(y)
+    yAxisLeftGroup
       .call(yAxisLeft)
       .selectAll('.tick text')
 
-    const yAxisRight = d3.axisRight()
-    yAxisRight.scale(y)
-    scales.select('.y.axis.right')
+    const yAxisRight = d3.axisRight().scale(y)
+    yAxisRightGroup
       .call(yAxisRight)
       .selectAll('.tick text')
 
     const height = y.range()[1]
     svg.attr('height', (height + margin.top + innerMargin.top + margin.bottom + innerMargin.bottom) + 'px')
 
-    scales.select('.x.axis.bottom')
+    xAxisBottomGroup
       .attr('transform', 'translate(' + [innerMargin.left, height + innerMargin.top + innerMargin.bottom] + ')')
 
     const bars = timelines.selectAll('g.bar')
@@ -146,22 +149,15 @@ export default function timeline ({
 
     backgroundSelection.attr('width', width - margin.left - innerMargin.left - margin.right - innerMargin.right)
 
-    //svg.selectAll('rect.function')
     funct
       .attr('transform', d => 'translate(' + x(d.startTime) + ',0)')
       .attr('width', d => calculateWidth(d, x))
 
-    // svg.selectAll('rect.function')
-    //   .attr('transform', (d) => {
-    //     return 'translate(' + xBrush(d.startTime) + ',0)';})
-    //   .attr('width', (d) => {
-    //     return calculateWidth(d, xBrush)
-    //   })
     // update axes
-    scales.select('.x.axis.top').call(xAxisTop)
-    scales.select('.x.axis.bottom').call(xAxisBottom)
-  // context.select('.x.axis.context.bottom').call(xAxisBrush.orient('bottom'))
-  // context.select('.x.brush').call(brush.extent(focusExtent))
+    xAxisTopGroup.call(xAxisTop)
+    xAxisBottomGroup.call(xAxisBottom)
+    yAxisRightGroup
+      .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
   }
 
   update(data)

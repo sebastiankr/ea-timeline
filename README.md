@@ -6,7 +6,6 @@
 
 Reactive timeline/gantt chart using D3.
 
-![alt tag](https://raw.githubusercontent.com/sebastiankr/ea-timeline-ts/master/preview.gif)
 
 ## Features
 
@@ -14,8 +13,51 @@ Reactive timeline/gantt chart using D3.
 - Automatically scrolls with time
 - Resizes horizontally
 
-## Project Setup
+## Getting started
 
+In your website
+```
+npm install ea-timeline
+```
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  ...
+  <script src="node_modules/build/ea-timeline.min.js "></script>
+  ...
+</head>
+<body>
+    ...
+    <div id="ea-timeline"></div>
+    ...
+   <script>
+   var data = [
+    {
+      key: 'Process 1',
+      values: [
+        {
+          startTime: moment().subtract(4, 'hours'),
+          endTime: moment().subtract(3, 'hours')
+        }
+      ]
+    }
+  ];
+  var timeline = ea.timeline({elementSelector: '#ea-timeline', data: data});
+   </script>
+```
+
+For development
+```
+git clone https://github.com/sebastiankr/ea-timeline.git
+cd ea-timeline
+npm install
+npm start
+```
+
+
+![alt tag](https://raw.githubusercontent.com/sebastiankr/ea-timeline-ts/master/preview.gif)
 
 ## TODO
 
@@ -30,4 +72,4 @@ _Inspired by_
 
 ## License
 
-BSD-3-Clause
+MIT

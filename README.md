@@ -2,6 +2,8 @@
 [![npm (scoped)](https://img.shields.io/npm/v/ea-timeline.svg)](https://github.com/sebastiankr/ea-timeline/releases)
 [![Dependency Status](https://david-dm.org/sebastiankr/ea-timeline/status.svg)](https://david-dm.org/sebastiankr/ea-timeline)
 [![devDependency Status](https://david-dm.org/sebastiankr/ea-timeline/dev-status.svg)](https://david-dm.org/sebastiankr/ea-timeline#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/sebastiankr/ea-timeline/master.svg?style=flat)](https://travis-ci.org/sebastiankr/ea-timeline)
+
 Reactive timeline/gantt chart using D3.
 
 ![alt tag](https://raw.githubusercontent.com/sebastiankr/ea-timeline-ts/master/preview.gif)

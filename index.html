@@ -3,10 +3,11 @@
 
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+   <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-
+  
 </head>
 
 <body>
@@ -23,12 +24,46 @@
         }
       </style>
     </div>
+    <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
+
+    <div id="ea-timeline-1" class="timeline">
+      <style scoped>      
+        .bar rect.timeline-background {
+          stroke: #fff;
+          fill: #eee;
+        }
+      </style>
+    </div>
+    <div id="container" style="width:800px;height:600px;border:1px solid grey"></div>
+
   </div>
-</body>
 <script src="./node_modules/moment/min/moment.min.js"></script>
 <script src="./node_modules/lodash/lodash.js"></script>
 <script src="./node_modules/d3/build/d3.js"></script>
 <script src="./build/ea-timeline.js"></script>
+<script src="./node_modules/monaco-editor/min/vs/loader.js"></script>
+<script>
+    require.config({ paths: { 'vs': './node_modules/monaco-editor/min/vs' }});
+    require(['vs/editor/editor.main'], function() {
+        var editor = monaco.editor.create(document.getElementById('container'), {
+            value: [
+              '/* Data needs to be passed in this format to the timeline: */',
+              'var data = [',
+              `{ key: 'Process 1',`,
+              `  values: [`,
+              `{ key: 'Process 1'}`,
+              `]`,
+              `{ key: 'Process 1'}`,
+              '/* Using default settings */',
+              ']',
+              '/* Using default settings */',
+              'var defaultTimeline = ea.timeline({data: d});'
+            ].join('\n'),
+            language: 'javascript'
+        });
+    });
+</script>
+
 <script>
 window.onload = function runD3code() {
        var data = [
@@ -74,8 +109,9 @@ window.onload = function runD3code() {
         var d = nestBykey.entries(data);
 
         var defaultTimeline = ea.timeline({data: d});
+        var timeline1 = ea.timeline({elementSelector: '#ea-timeline-1', data: d, innerMargin: { top: 10, right: 10, bottom: 10, left: 10 }});
         
-        var timelines = [defaultTimeline]
+        var timelines = [defaultTimeline, timeline1]
         
         d3.select("#addprocess").on("click", function () {
           d.push({ key: 'test'+ 8*Math.random(), values: [] })
@@ -140,5 +176,5 @@ window.onload = function runD3code() {
           //defaultTimeline.resize()
         }, true)
    };</script>
-
+  </body>
 </html>

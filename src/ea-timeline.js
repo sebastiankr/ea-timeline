@@ -74,21 +74,25 @@ export default function timeline ({
       .range([0, data.length * timelineHeight])
       .round(true)
 
-    const yAxisLeft = d3.axisLeft().scale(y)
-    yAxisLeftGroup
-      .call(yAxisLeft)
-      .selectAll('.tick text')
+    if (showAxis.left) {
+      yAxisLeftGroup
+        .call(d3.axisLeft().scale(y))
+        .selectAll('.tick text')
+    }
 
-    const yAxisRight = d3.axisRight().scale(y)
-    yAxisRightGroup
-      .call(yAxisRight)
-      .selectAll('.tick text')
+    if (showAxis.right) {
+      yAxisRightGroup
+        .call(d3.axisRight().scale(y))
+        .selectAll('.tick text')
+    }
 
     const height = y.range()[1]
     svg.attr('height', (height + margin.top + innerMargin.top + margin.bottom + innerMargin.bottom) + 'px')
 
-    xAxisBottomGroup
-      .attr('transform', 'translate(' + [innerMargin.left, height + innerMargin.top + innerMargin.bottom] + ')')
+    if (showAxis.bottom) {
+      xAxisBottomGroup
+        .attr('transform', 'translate(' + [innerMargin.left, height + innerMargin.top + innerMargin.bottom] + ')')
+    }
 
     const bars = timelines.selectAll('g.bar')
       .data(data)
@@ -102,8 +106,6 @@ export default function timeline ({
       .attr('class', 'timeline-background')
       .attr('height', y.bandwidth())
       .attr('width', width - margin.left - innerMargin.left - margin.right)
-
-    // bars.attr('transform', (d) => 'translate(' + [0, y(d.key)] + ')')
 
     const funct = g.selectAll('rect.function')
       .data(d => d.values)
@@ -153,10 +155,12 @@ export default function timeline ({
       .attr('width', d => calculateWidth(d, x))
 
     // update axes
-    xAxisTopGroup.call(xAxisTop)
-    xAxisBottomGroup.call(xAxisBottom)
-    yAxisRightGroup
-      .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
+    if (showAxis.top) { xAxisTopGroup.call(xAxisTop) }
+    if (showAxis.bottom) { xAxisBottomGroup.call(xAxisBottom) }
+    if (showAxis.right) {
+      yAxisRightGroup
+        .attr('transform', 'translate(' + [width - margin.left - margin.right + innerMargin.right, innerMargin.top] + ')')
+    }
   }
 
   update(data)

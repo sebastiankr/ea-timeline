@@ -1,7 +1,7 @@
 # ea-timeline
 
+[![Dependency Status](https://david-dm.org/sebastiankr/ea-timeline.svg?path=base)](https://david-dm.org/cyclejs/cyclejs?path=base)
 [![devDependency Status](https://david-dm.org/sebastiankr/ea-timeline/dev-status.svg)](https://david-dm.org/sebastiankr/ea-timeline#info=devDependencies)
-
 Reactive timeline/gantt chart using D3.
 
 ![alt tag](https://raw.githubusercontent.com/sebastiankr/ea-timeline-ts/master/preview.gif)

@@ -1,5 +1,5 @@
 # ea-timeline
-[![npm (scoped)](https://img.shields.io/npm/v/ea-timeline.svg)]
+[![npm (scoped)](https://img.shields.io/npm/v/ea-timeline.svg)](https://github.com/sebastiankr/ea-timeline/releases)
 [![Dependency Status](https://david-dm.org/sebastiankr/ea-timeline/status.svg)](https://david-dm.org/sebastiankr/ea-timeline)
 [![devDependency Status](https://david-dm.org/sebastiankr/ea-timeline/dev-status.svg)](https://david-dm.org/sebastiankr/ea-timeline#info=devDependencies)
 Reactive timeline/gantt chart using D3.

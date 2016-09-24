@@ -4,7 +4,7 @@
 [![devDependency Status](https://david-dm.org/sebastiankr/ea-timeline/dev-status.svg)](https://david-dm.org/sebastiankr/ea-timeline#info=devDependencies)
 [![Build Status](https://img.shields.io/travis/sebastiankr/ea-timeline/master.svg?style=flat)](https://travis-ci.org/sebastiankr/ea-timeline)
 
-Reactive timeline/gantt chart using D3.
+Reactive timeline/gantt chart using D3 v4.
 
 
 ## Features
@@ -16,7 +16,7 @@ Reactive timeline/gantt chart using D3.
 ## Getting started
 
 In your website
-```
+```shell
 npm install ea-timeline
 ```
 
@@ -49,7 +49,7 @@ npm install ea-timeline
 ```
 
 For development
-```
+```shell
 git clone https://github.com/sebastiankr/ea-timeline.git
 cd ea-timeline
 npm install
